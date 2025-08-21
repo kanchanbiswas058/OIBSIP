@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature Converter</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(to right, #34bce6, #b7ec6e);
+    }
+
+    .converter {
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      text-align: left;
+      font-weight: bold;
+      color: #444;
+    }
+
+    select, input {
+      width: 90%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      background: #4CAF50;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      width: 90%;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #4556a0;
+    }
+
+    #result {
+      width: 90%;
+      padding: 12px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-weight: bold;
+      text-align: center;
+      font-size: 16px;
+      background: #f9f9f9;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="converter">
+    <h2>Temperature Converter</h2>
+
+    <label for="fromUnit">From:</label>
+    <select id="fromUnit">
+      <option value="C">Celsius</option>
+      <option value="F">Fahrenheit</option>
+      <option value="K">Kelvin</option>
+    </select>
+
+    <label for="toUnit">To:</label>
+    <select id="toUnit">
+      <option value="C">Celsius</option>
+      <option value="F">Fahrenheit</option>
+      <option value="K">Kelvin</option>
+    </select>
+
+    <label for="temperature">Temperature:</label>
+    <input type="number" id="temperature" placeholder="Enter value">
+
+    <button onclick="convert()">Convert</button>
+
+    <label for="result">Result:</label>
+    <input type="text" id="result" readonly>
+  </div>
+
+  <script>
+    function convert() {
+      const fromUnit = document.getElementById('fromUnit').value;
+      const toUnit = document.getElementById('toUnit').value;
+      const temperature = parseFloat(document.getElementById('temperature').value);
+
+      // Handle empty input
+      if (isNaN(temperature)) {
+        document.getElementById('result').value = "Please enter a valid number";
+        return;
+      }
+
+      let convertedValue;
+      let resultUnit;
+
+      // Conversion logic
+      switch (fromUnit) {
+        case 'C':
+          if (toUnit === 'F') {
+            convertedValue = (temperature * 9/5) + 32;
+            resultUnit = '°F';
+          } else if (toUnit === 'K') {
+            convertedValue = temperature + 273.15;
+            resultUnit = 'K';
+          } else {
+            convertedValue = temperature;
+            resultUnit = '°C';
+          }
+          break;
+
+        case 'F':
+          if (toUnit === 'C') {
+            convertedValue = (temperature - 32) * 5/9;
+            resultUnit = '°C';
+          } else if (toUnit === 'K') {
+            convertedValue = (temperature - 32) * 5/9 + 273.15;
+            resultUnit = 'K';
+          } else {
+            convertedValue = temperature;
+            resultUnit = '°F';
+          }
+          break;
+
+        case 'K':
+          if (toUnit === 'C') {
+            convertedValue = temperature - 273.15;
+            resultUnit = '°C';
+          } else if (toUnit === 'F') {
+            convertedValue = (temperature - 273.15) * 9/5 + 32;
+            resultUnit = '°F';
+          } else {
+            convertedValue = temperature;
+            resultUnit = 'K';
+          }
+          break;
+      }
+
+      // Show result with unit
+      document.getElementById('result').value = convertedValue.toFixed(2) + " " + resultUnit;
+    }
+  </script>
+</body>
+</html>
